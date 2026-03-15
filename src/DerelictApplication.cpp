@@ -56,13 +56,13 @@ static void initGte() {
 
 }
 
-static void loadToVRAM(psyqo::GPU &gpu, unsigned char data[], uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
+static void loadToVRAM(psyqo::GPU &gpu, void *data, uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
     psyqo::Rect r;
     r.pos.x = x;
     r.pos.y = y;
-    r.pos.w = w;
-    r.pos.h = h;
-    gpu.uploadToVRAM((uint16_t *)data, r);
+    r.size.w = w;
+    r.size.h = h;
+    gpu.uploadToVRAM(static_cast<uint16_t *>(data), r);
 }
 
 // ------------------------------------------------------
