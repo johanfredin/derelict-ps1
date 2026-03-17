@@ -8,8 +8,7 @@ SRCS += \
 	src/main.cpp \
 	src/DerelictApplication.cpp \
 	src/GameScene.cpp \
-	src/Angel.cpp \
-	src/Engine.cpp
+	src/Angel.cpp
 
 
 	include third_party/nugget/psyqo/psyqo.mk

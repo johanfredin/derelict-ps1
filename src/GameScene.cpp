@@ -1,17 +1,13 @@
 #include "GameScene.h"
+
+#include "DerelictApplication.h"
 #include "psyqo/primitives/quads.hh"
 #include "psyqo/font.hh"
 
 
-struct Fragment {
-    uint32_t head{};
-    psyqo::Prim::TexturedQuad quads[2];
-    [[nodiscard]] size_t getActualFragmentSize() const {
-        return sizeof(quads) / sizeof(uint32_t);
-    }
-};
+DerelictApplication::Fragment frag;
 
-Fragment frag;
+static constexpr psyqo::Color bgc = {.r = 100, .g = 100, .b = 100};
 
 
 void initBg() {
@@ -54,9 +50,17 @@ void GameScene::start(const StartReason reason) {
 }
 
 void GameScene::frame() {
-    constexpr psyqo::Color c = {10, 10, 10};
-    gpu().clear(c);
-    gpu().sendFragment(frag);
-    // m_angel.draw(gpu());
+    const auto curFrame = gpu().getParity();
+    auto&[clear, ot] = DerelictApplication::frameBuf[curFrame];
 
+    ot.clear();
+    gpu().getNextClear(clear.primitive, bgc);
+    gpu().chain(clear);
+
+    // Insert bg at the back
+    ot.insert(frag, DerelictApplication::OT_SIZE - 1);
+
+    m_angel.draw(gpu());
+
+    gpu().chain(ot);
 }

@@ -7,3 +7,4 @@ PSX.Dev-README.md
 *.o
 *.a
 third_party
+/third_party/
