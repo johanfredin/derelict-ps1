@@ -8,3 +8,5 @@ PSX.Dev-README.md
 *.a
 third_party
 /third_party/
+.idea
+.vscode
