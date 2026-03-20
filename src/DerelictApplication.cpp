@@ -16,10 +16,13 @@ static constexpr unsigned PROJECTION_PLANE_DISTANCE = 120;
 static constexpr unsigned AVG_Z_TRI = DerelictApplication::OT_SIZE / 3;
 static constexpr unsigned AVG_Z_QUAD = DerelictApplication::OT_SIZE / 4;
 
+
+
 // So that we ACTUALLY get static shared instances
 DerelictApplication::Fragment DerelictApplication::fragment;
 DerelictApplication::FrameBuf DerelictApplication::frameBuf[2];
-psyqo::Font<> DerelictApplication::font;
+psyqo::SimplePad DerelictApplication::controller;
+
 
 static void initGpu(psyqo::GPU &gpu, const psyqo::GPU::Resolution res, const psyqo::GPU::Interlace interlace) {
     psyqo::GPU::Configuration config;
@@ -75,7 +78,7 @@ void DerelictApplication::createScene() {
 }
 
 void DerelictApplication::start() {
-    font.uploadSystemFont(gpu());
+    controller.initialize();
     loadToVRAM(gpu(), assets_tim_bedroom_1_tim, 320, 0, 320, 240);
     loadToVRAM(gpu(), assets_tim_bedroom_2_tim, 320 * 2, 0, 320, 240);
     loadToVRAM(gpu(), angel_tim, 320, 256, 80, 200);

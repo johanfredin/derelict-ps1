@@ -2,11 +2,12 @@
 #define DERELICT_PS1_DERELICT_H
 
 #include "psyqo/application.hh"
-#include "psyqo/font.hh"
 #include "psyqo/fragments.hh"
 #include "psyqo/matrix.hh"
+#include "psyqo/simplepad.hh"
 #include "psyqo/trigonometry.hh"
 #include "psyqo/primitives/quads.hh"
+
 
 using namespace psyqo::fixed_point_literals;
 
@@ -37,15 +38,19 @@ public:
         }
     };
 
-    static psyqo::Font<> font;
+    static inline bool isPad1Btn(const psyqo::SimplePad::Button button) {
+        return controller.isButtonPressed(psyqo::SimplePad::Pad1, button);
+    }
+
     static Fragment fragment;
     static FrameBuf frameBuf[2];
     void prepare() override;
     void start() override;
     void createScene() override;
-
 private:
+    static psyqo::SimplePad controller;
     psyqo::Trig<> trig;
+
 };
 
 #endif //DERELICT_PS1_DERELICT_H

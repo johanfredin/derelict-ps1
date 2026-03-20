@@ -2,17 +2,16 @@
 
 #include "DerelictApplication.h"
 #include "psyqo/primitives/quads.hh"
-#include "psyqo/font.hh"
-
 
 DerelictApplication::Fragment frag;
 
 static constexpr psyqo::Color bgc = {.r = 100, .g = 100, .b = 100};
-
+static constexpr psyqo::Color dark = {.r = 64, .g = 32, .b = 48};
 
 void initBg() {
     psyqo::Prim::TexturedQuad bg_chunk1;
     psyqo::Prim::TexturedQuad bg_chunk2;
+
     bg_chunk1.pointA = {{.x = 0, .y = 0}};
     bg_chunk1.pointB = {{.x = 256, .y = 0}};
     bg_chunk1.pointC = {{.x = 0, .y = 240}};
@@ -25,6 +24,7 @@ void initBg() {
             .set(psyqo::Prim::TPageAttr::ColorMode::Tex16Bits)
             .setPageX(5)
             .setPageY(0);
+    bg_chunk1.setColor(dark);
 
     bg_chunk2.pointA = {{.x = 256, .y = 0}};
     bg_chunk2.pointB = {{.x = 320, .y = 0}};
@@ -38,6 +38,8 @@ void initBg() {
             .set(psyqo::Prim::TPageAttr::ColorMode::Tex16Bits)
             .setPageX(9)
             .setPageY(0);
+    bg_chunk2.setColor(dark);
+
 
     frag.quads[0] = bg_chunk1;
     frag.quads[1] = bg_chunk2;
@@ -45,11 +47,12 @@ void initBg() {
 
 void GameScene::start(const StartReason reason) {
     initBg();
-    m_angel.init();
+    m_angel.init(gpu());
     Scene::start(reason);
 }
 
 void GameScene::frame() {
+    m_angel.tick();
     const auto curFrame = gpu().getParity();
     auto&[clear, ot] = DerelictApplication::frameBuf[curFrame];
 
